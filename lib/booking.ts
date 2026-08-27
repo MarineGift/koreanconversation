@@ -6,6 +6,7 @@ export interface Coach {
   id: string;
   name: string;
   title: string | null;
+  headline?: string | null;   // ← 추가
   bio: string | null;
   photo: string | null;
   email: string | null;
@@ -294,18 +295,19 @@ export async function getCoachesForOrg(orgId: string): Promise<Coach[]> {
   const profileMap = new Map((profiles ?? []).map((p) => [p.coach_id, p]));
 
   return (coaches ?? []).map((c) => {
-    const p = profileMap.get(c.id);
-    return {
-      id: c.id,
-      name: c.name,
-      title: p?.headline ?? c.title ?? null,
-      bio: p?.bio ?? c.bio ?? null,
-      photo: c.photo ?? null,
-      email: c.email ?? null,
-      specialties: p?.specialties ?? null,
-      credentials: p?.credentials ?? null,
-    };
-  });
+  const p = profileMap.get(c.id);
+  return {
+    id: c.id,
+    name: c.name,
+    title: p?.headline ?? c.title ?? null,
+    headline: p?.headline ?? c.headline ?? null,   // ← 추가
+    bio: p?.bio ?? c.bio ?? null,
+    photo: c.photo ?? null,
+    email: c.email ?? null,
+    specialties: p?.specialties ?? null,
+    credentials: p?.credentials ?? null,
+  };
+});
 }
 
 export async function confirmBooking(bookingId: string): Promise<{ error: string | null }> {
