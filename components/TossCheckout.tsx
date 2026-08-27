@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
+import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
 import { getOrgId } from '@/lib/org';
 
 const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || '';
@@ -51,13 +51,18 @@ export default function TossCheckout({ packId, agreed, onSuccess, onError }: Pro
         },
         body: JSON.stringify({ packId, organizationId: orgId }),
       });
+
       const text = await res.text();
       let data;
       try { data = JSON.parse(text); } catch { throw new Error('서버 응답을 처리할 수 없습니다.'); }
       if (!res.ok) throw new Error(data.error || '주문 생성에 실패했습니다.');
 
       const tossPayments = await loadTossPayments(TOSS_CLIENT_KEY);
-      await tossPayments.requestPayment('CARD', {
+      const customerKey = session?.user?.id ?? ANONYMOUS;
+      const payment = tossPayments.payment({ customerKey });
+
+      await payment.requestPayment({
+        method: 'CARD',
         amount: {
           currency: data.currency,
           value: data.amount,
