@@ -27,6 +27,7 @@ const FALLBACK_SLIDES: CarouselSlide[] = [
     created_at: '',
     slide_type: 'hangul',
     stats: null,
+    organization_id: null,
   },
   {
     id: 'fallback-1',
@@ -42,6 +43,7 @@ const FALLBACK_SLIDES: CarouselSlide[] = [
     created_at: '',
     slide_type: 'image',
     stats: null,
+    organization_id: null,
   },
   {
     id: 'fallback-2',
@@ -57,6 +59,7 @@ const FALLBACK_SLIDES: CarouselSlide[] = [
     created_at: '',
     slide_type: 'image',
     stats: null,
+    organization_id: null,
   },
   {
     id: 'fallback-3',
@@ -72,6 +75,7 @@ const FALLBACK_SLIDES: CarouselSlide[] = [
     created_at: '',
     slide_type: 'image',
     stats: null,
+    organization_id: null,
   },
 ];
 
