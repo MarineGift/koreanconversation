@@ -23,6 +23,9 @@ export interface CarouselSlide {
   slide_type: SlideType;
   stats: StatItem[] | null;
   organization_id: string | null;
+  slide_type: SlideType;
+  stats: StatItem[] | null;
+  organization_id: string | null;
 }
 
 function ordered(query: any) {
