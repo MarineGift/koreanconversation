@@ -30,7 +30,7 @@ export default function HangulScene() {
   const s = syllables[idx];
   const showCho = phase >= 1;
   const showJung = phase >= 2;
-  const showJong = phase >= 3 && s.jong;
+  const showJong = Boolean(phase >= 3 && s.jong);
   const merged = phase >= 4;
 
   return (
