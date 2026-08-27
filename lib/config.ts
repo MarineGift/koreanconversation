@@ -1,0 +1,1 @@
+export const ORG_SLUG = process.env.NEXT_PUBLIC_ORG_SLUG || 'korean-coaching';
