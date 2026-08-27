@@ -6,7 +6,7 @@ export interface Coach {
   id: string;
   name: string;
   title: string | null;
-  headline?: string | null;   // ← 추가
+  headline?: string | null;
   bio: string | null;
   photo: string | null;
   email: string | null;
