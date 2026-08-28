@@ -18,6 +18,7 @@ import {
   computeStats,
   computeOptions,
   type VisitorLog,
+  type CountItem,
   type VisitorFilters,
   type VisitorOptions,
 } from '@/lib/visitorAnalytics';
