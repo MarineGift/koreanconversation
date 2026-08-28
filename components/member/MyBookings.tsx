@@ -75,7 +75,7 @@ export default function MyBookings({ bookings, role, onConfirm, onDecline }: { b
   }, [bookings]);
 
   const sites = useMemo(() => {
-    const set = new Set(bookings.map((b) => b.site_name).filter((s): s is string => Boolean(s));
+    const set = new Set(bookings.map((b) => b.site_name).filter((s): s is string => Boolean(s)));
     return ['All', ...Array.from(set)];
   }, [bookings]);
 
