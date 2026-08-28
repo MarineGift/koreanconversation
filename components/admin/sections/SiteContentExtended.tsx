@@ -289,7 +289,7 @@ function normalizeList(list: ListDef, raw: unknown[]): Item[] {
 
 export default function SiteContentExtended({ orgId }: { orgId: string }) {
   const [tab, setTab] = useState<'main' | 'business' | 'tour' | 'medical' | 'packages' | 'header'>('main');
-  const [data, setData] = useState<Record<string, SectionData>>();
+  const [data, setData] = useState<Record<string, 어떤타입>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
