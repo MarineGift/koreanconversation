@@ -15,7 +15,7 @@ export interface BookingDetail {
   lesson_content: string | null;
   feedback: string | null;
   notes: string | null;
-  session_type?: string;
+  session_type?: string | null;
   status?: string | null;
   paddle_transaction_id?: string | null;
   amount_paid?: number | null;
