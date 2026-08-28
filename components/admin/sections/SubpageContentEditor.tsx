@@ -1,27 +1,22 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { fetchContent, saveSiteContent } from '@/lib/siteContent';
-
 interface FieldDef {
   key: string;
   label: string;
-  type: 'text' | 'textarea';
+  type?: 'text' | 'textarea';
 }
-
 interface SubpageContentEditorProps {
   orgId: string;
   section: string;
   fields: FieldDef[];
   title: string;
 }
-
 export default function SubpageContentEditor({ orgId, section, fields, title }: SubpageContentEditorProps) {
-  const [values, setValues] = useState<Record<string, string>>();
+  const [values, setValues] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
-
   useEffect(() => {
     if (!orgId) return;
     let mounted = true;
@@ -32,11 +27,9 @@ export default function SubpageContentEditor({ orgId, section, fields, title }: 
     });
     return () => { mounted = false; };
   }, [orgId, section]);
-
   function setField(key: string, value: string) {
     setValues((prev) => ({ ...prev, [key]: value }));
   }
-
   async function save() {
     setSaving(true);
     setMsg('');
@@ -48,7 +41,6 @@ export default function SubpageContentEditor({ orgId, section, fields, title }: 
     setSaving(false);
     setMsg(failed ? '저장 중 일부 오류가 발생했습니다.' : '저장되었습니다.');
   }
-
   if (loading) {
     return (
       <div className="bg-white rounded-2xl border border-neutral-200 p-10 text-center text-sm text-neutral-500">
@@ -56,7 +48,6 @@ export default function SubpageContentEditor({ orgId, section, fields, title }: 
       </div>
     );
   }
-
   return (
     <div className="bg-white rounded-2xl border border-neutral-200 p-6 space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-3">
