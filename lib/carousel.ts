@@ -1,13 +1,10 @@
 import { supabase } from './supabase';
-
 export type SlideType = 'image' | 'hangul' | 'stats' | 'testimonial';
 export type AnimationStyle = 'fade' | 'slide';
-
 export interface StatItem {
   label: string;
   value: string;
 }
-
 export interface CarouselSlide {
   id: string;
   title: string;
@@ -23,15 +20,10 @@ export interface CarouselSlide {
   slide_type: SlideType;
   stats: StatItem[] | null;
   organization_id: string | null;
-  slide_type: SlideType;
-  stats: StatItem[] | null;
-  organization_id: string | null;
 }
-
 function ordered(query: any) {
   return query.order('sort_order', { ascending: true }).order('created_at', { ascending: true });
 }
-
 export async function getActiveCarouselSlides(orgId?: string | null): Promise<CarouselSlide[]> {
   if (orgId) {
     const { data } = await ordered(
@@ -44,7 +36,6 @@ export async function getActiveCarouselSlides(orgId?: string | null): Promise<Ca
   );
   return (data ?? []) as CarouselSlide[];
 }
-
 export async function getAllCarouselSlides(orgId?: string | null): Promise<CarouselSlide[]> {
   let query = supabase.from('carousel_slides').select('*');
   if (orgId) {
@@ -55,7 +46,6 @@ export async function getAllCarouselSlides(orgId?: string | null): Promise<Carou
   const { data } = await ordered(query);
   return (data ?? []) as CarouselSlide[];
 }
-
 export async function getCarouselSettings(orgId?: string | null): Promise<AnimationStyle> {
   let query = supabase.from('carousel_settings').select('animation_style');
   if (orgId) {
@@ -65,7 +55,6 @@ export async function getCarouselSettings(orgId?: string | null): Promise<Animat
   }
   const { data } = await query.maybeSingle();
   if (data) return data.animation_style === 'slide' ? 'slide' : 'fade';
-
   if (orgId) {
     const { data: global } = await supabase
       .from('carousel_settings')
@@ -76,19 +65,16 @@ export async function getCarouselSettings(orgId?: string | null): Promise<Animat
   }
   return 'fade';
 }
-
 export async function updateCarouselSettings(orgId: string | null, animationStyle: AnimationStyle) {
   const { data: existing } = await supabase
     .from('carousel_settings')
     .select('id')
     .eq('organization_id', orgId)
     .maybeSingle();
-
   const payload = {
     animation_style: animationStyle,
     updated_at: new Date().toISOString(),
   };
-
   if (existing) {
     return supabase.from('carousel_settings').update(payload).eq('id', existing.id);
   }
@@ -98,7 +84,6 @@ export async function updateCarouselSettings(orgId: string | null, animationStyl
     animation_style: animationStyle,
   });
 }
-
 export interface CarouselSlideInput {
   title: string;
   subtitle?: string | null;
@@ -113,15 +98,12 @@ export interface CarouselSlideInput {
   stats?: StatItem[] | null;
   organization_id?: string | null;
 }
-
 export async function addCarouselSlide(input: CarouselSlideInput) {
   return supabase.from('carousel_slides').insert(input);
 }
-
 export async function updateCarouselSlide(id: string, input: CarouselSlideInput) {
   return supabase.from('carousel_slides').update(input).eq('id', id);
 }
-
 export async function deleteCarouselSlide(id: string) {
   return supabase.from('carousel_slides').delete().eq('id', id);
 }
