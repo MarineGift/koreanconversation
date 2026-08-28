@@ -1,3 +1,5 @@
+import type { DashboardBooking } from '@/lib/dashboard';
+
 export default function RefundModal({
   booking,
   busy,
