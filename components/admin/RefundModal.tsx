@@ -1,4 +1,4 @@
-'use client';
+import { useState } from 'react';
 import type { DashboardBooking } from '@/lib/dashboard';
 
 export default function RefundModal({
