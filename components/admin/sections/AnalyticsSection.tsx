@@ -130,7 +130,7 @@ function Overview({ stats, hasSiteFilter }: { stats: NonNullable<ReturnType<type
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label={({ name, count }) => `${name} ${count}`}
+                  label={({ name, value }) => `${name} ${value}`}
                 >
                   {stats.countries.slice(0, 6).map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -303,7 +303,7 @@ function PageAnalysis({ pages, logs }: { pages: CountItem[]; logs: VisitorLog[] 
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label={({ name, count }) => `${name} ${count}`}
+                  label={({ name, value }) => `${name} ${value}`}
                 >
                   {categoryStats.slice(0, 6).map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
