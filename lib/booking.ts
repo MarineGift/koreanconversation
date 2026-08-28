@@ -282,7 +282,7 @@ export async function getCoachesForOrg(orgId: string): Promise<Coach[]> {
 
   const { data: coaches } = await supabase
     .from('coaches')
-    .select('id, name, title, bio, photo, email')
+    .select('id, name, title, headline, bio, photo, email')
     .in('id', coachIds)
     .order('created_at', { ascending: true });
 
