@@ -281,7 +281,7 @@ function normalizeList(list: ListDef, raw: unknown[]): Item[] {
     const item: Item = {};
     for (const f of list.fields ?? []) {
       const v = obj[f.key];
-      item[f.key] = Array.isArray(v) ? v.join('\n') : (v ?? '');
+      item[f.key] = Array.isArray(v) ? v.join('\n') : (v == null ? '' : String(v));
     }
     return item;
   });
