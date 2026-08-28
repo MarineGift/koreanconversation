@@ -289,7 +289,7 @@ function normalizeList(list: ListDef, raw: unknown[]): Item[] {
 
 export default function SiteContentExtended({ orgId }: { orgId: string }) {
   const [tab, setTab] = useState<'main' | 'business' | 'tour' | 'medical' | 'packages' | 'header'>('main');
-  const [data, setData] = useState<Record<string, { fields: Record<string, string>; lists: Record<string, Item[]> }>>({});
+  const [data, setData] = useState<Record<string, SectionData>>();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
@@ -322,14 +322,18 @@ export default function SiteContentExtended({ orgId }: { orgId: string }) {
   }, [orgId]);
 
   function setField(sec: string, key: string, value: string) {
-    setData((prev) => ({
-      ...prev,
-      [sec]: { ...prev[sec], fields: { ...prev[sec].fields, [key]: value } },
-    }));
+    setData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [sec]: { ...prev[sec], fields: { ...prev[sec].fields, [key]: value } },
+      };
+    });
   }
 
   function setListItem(sec: string, listKey: string, idx: number, field: string, value: string) {
     setData((prev) => {
+      if (!prev) return prev;
       const list = [...prev[sec].lists[listKey]];
       const item = { ...list[idx] } as Item;
       item[field] = value;
@@ -342,20 +346,27 @@ export default function SiteContentExtended({ orgId }: { orgId: string }) {
     const empty: Item = def.stringList
       ? { value: '' }
       : Object.fromEntries((def.fields ?? []).map((f) => [f.key, f.array ? [] : '']));
-    setData((prev) => ({
-      ...prev,
-      [sec]: { ...prev[sec], lists: { ...prev[sec].lists, [listKey]: [...prev[sec].lists[listKey], empty] } },
-    }));
+    setData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [sec]: { ...prev[sec], lists: { ...prev[sec].lists, [listKey]: [...prev[sec].lists[listKey], empty] } },
+      };
+    });
   }
 
   function removeItem(sec: string, listKey: string, idx: number) {
-    setData((prev) => ({
-      ...prev,
-      [sec]: { ...prev[sec], lists: { ...prev[sec].lists, [listKey]: prev[sec].lists[listKey].filter((_, i) => i !== idx) } },
-    }));
+    setData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        [sec]: { ...prev[sec], lists: { ...prev[sec].lists, [listKey]: prev[sec].lists[listKey].filter((_, i) => i !== idx) } },
+      };
+    });
   }
 
   async function saveMain() {
+    if (!data) return;
     setSaving(true);
     setMsg('');
     let failed = false;
@@ -385,13 +396,15 @@ export default function SiteContentExtended({ orgId }: { orgId: string }) {
     setMsg(failed ? '저장 중 일부 오류가 발생했습니다.' : '모든 섹션 문구가 저장되었습니다.');
   }
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="bg-white rounded-2xl border border-neutral-200 p-10 text-center text-sm text-neutral-500">
         불러오는 중...
       </div>
     );
   }
+
+  const content = data;
 
   return (
     <div className="space-y-6">
@@ -442,7 +455,7 @@ export default function SiteContentExtended({ orgId }: { orgId: string }) {
           {msg && <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">{msg}</p>}
 
           {SECTIONS.map((sec) => {
-            const d = data[sec.key];
+            const d = content[sec.key];
             if (!d) return null;
             return (
               <div key={sec.key} className="bg-white rounded-2xl border border-neutral-200 p-6 space-y-5">
