@@ -201,7 +201,7 @@ export default function BookingForm({
     submitQuestion: string,
     submitComment: string,
     finalSessionType: 'free' | 'single' | 'package',
-    orgId: string,
+    orgId: string | null,
     siteUrl: string | null,
     siteName: string | null,
     status: string = 'pending'
